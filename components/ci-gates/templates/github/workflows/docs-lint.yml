@@ -1,0 +1,38 @@
+name: docs-lint
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+env:
+  WORD_BUDGET: "{{WORD_BUDGET}}"
+
+jobs:
+  docs-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: CLAUDE.md word budget
+        run: |
+          count=$(wc -w < CLAUDE.md)
+          echo "CLAUDE.md: $count words (budget $WORD_BUDGET)"
+          [ "$count" -le "$WORD_BUDGET" ] || { echo "::error::CLAUDE.md over budget"; exit 1; }
+
+      - name: STATE.md phrasing
+        run: |
+          if grep -niE 'awaiting merge|unpushed|not yet merged' docs/STATE.md; then
+            echo "::error::STATE.md contains phrasing a merge would falsify"
+            exit 1
+          fi
+
+      - name: PR title grammar
+        if: github.event_name == 'pull_request'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "$TITLE" | grep -qE '^(feat|fix|docs|design|wave): .+' || {
+            echo "::error::PR title must match 'type: summary' (feat|fix|docs|design|wave)"
+            exit 1
+          }

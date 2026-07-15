@@ -1,0 +1,23 @@
+#!/bin/sh
+# docs-lint pre-commit hook (local flavor of the ci-gates component).
+# Same checks as the GitHub workflow, minus PR title grammar.
+
+WORD_BUDGET={{WORD_BUDGET}}
+fail=0
+
+if [ -f CLAUDE.md ]; then
+  count=$(wc -w < CLAUDE.md)
+  if [ "$count" -gt "$WORD_BUDGET" ]; then
+    echo "docs-lint: CLAUDE.md is $count words (budget $WORD_BUDGET)" >&2
+    fail=1
+  fi
+fi
+
+if [ -f docs/STATE.md ]; then
+  if grep -niE 'awaiting merge|unpushed|not yet merged' docs/STATE.md >&2; then
+    echo "docs-lint: STATE.md contains phrasing a merge would falsify" >&2
+    fail=1
+  fi
+fi
+
+exit $fail
