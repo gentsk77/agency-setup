@@ -11,7 +11,7 @@ Each component is a self-contained installable: a `COMPONENT.md` manifest (versi
 | `review-law` | 1.0.0 | REVIEW.md, reviewer charter, PR template, review flow | dev-lanes |
 | `steward` | 1.0.0 | Recurring process-audit skill | memory-core |
 | `gradable-rules` | 1.0.0 | Rule-article format, amendment log, validate script, eval pipeline skills | gateway |
-| `design-lane` | 1.1.0 | Design-lead charter, conventions checklist, establishment + proposal lifecycle, starter sheet | gateway |
+| `design-lane` | 1.3.0 | Design-lead charter, conventions checklist, establishment + proposal lifecycle, starter sheet + generated design.md | gateway |
 | `ci-gates` | 1.0.0 | Docs-lint GitHub Actions workflow, or local pre-commit equivalent | memory-core |
 
 ## Conventions every component follows

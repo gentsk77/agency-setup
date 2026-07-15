@@ -23,6 +23,7 @@ The mechanized gates (P07) for the memory core and instruction layer. Both flavo
 - Install exactly one flavor at setup; a repo that later gains a remote adds the workflow and can keep the hook.
 - The local hook must never be the only copy of a rule's rationale; it enforces, CLAUDE.md points, decisions explain (one fact, one home).
 - If gradable-rules is installed, add `python scripts/validate_rules.py` as a fourth check in whichever flavor was chosen.
+- If design-lane is installed, add `python scripts/generate_design_md.py --check` the same way (fails when `design.md` is stale against the sheet).
 
 ## Changelog
 

@@ -6,70 +6,147 @@
 <title>{{PROJECT_NAME}} design system</title>
 <style>
   /* ============================================================
-     TOKENS. The only place raw values live. Components below use
-     var() references exclusively; a new token is a maintainer
-     question, not a default. Replace this neutral starter palette
-     with the project's own as it gets ruled.
+     TOKENS. The only place raw values live; components below use
+     var() references exclusively. A new token is a maintainer
+     question, not a default. This is a neutral starter palette:
+     replace values as the project rules its own, keep the roles.
+
+     The gray ramp encodes intent by step, so a reader can tell a
+     token's job from its number:
+       100 to 300   tinted fills and hover states
+       400 to 600   borders (default, hover, active)
+       700 to 800   muted foreground: icons, disabled, tertiary
+       900 to 1000  text (secondary, primary)
+     Backgrounds sit outside the ramp as their own pair.
      ============================================================ */
   :root {
-    --bg: #f7f6f3;
-    --surface: #ffffff;
-    --ink-1: #23211c;      /* primary text */
-    --ink-2: #5c584f;      /* secondary text */
-    --ink-3: #98938a;      /* tertiary text, quiet glyphs */
-    --line: #e4e1da;       /* hairlines, borders */
-    --brand: #4a6b52;      /* the product's hand: actions, selection */
-    --brand-ink: #ffffff;  /* text on brand */
-    --accent: #b98a2f;     /* the one reserved meaning-hue; ration it (see Color notes) */
-    --radius-s: 6px;
-    --radius-m: 10px;
-    --shadow-1: 0 1px 3px rgba(20, 18, 12, 0.08);
-    --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-    --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+    --background-1: #f7f6f4;   /* the page */
+    --background-2: #ffffff;   /* raised surfaces: cards, inputs, menus */
+
+    --gray-100: #f2f1ee;
+    --gray-200: #eceae6;
+    --gray-300: #e2e0da;
+    --gray-400: #d7d4cd;
+    --gray-500: #c2beb5;
+    --gray-600: #a5a096;
+    --gray-700: #8a857b;
+    --gray-800: #6e6960;
+    --gray-900: #55514a;
+    --gray-1000: #22201c;
+
+    --brand: #4a6b52;          /* the product's hand: primary action, selection */
+    --brand-hover: #405e48;
+    --brand-ink: #ffffff;      /* text on brand */
+    --accent: #b98a2f;         /* the one reserved meaning-hue; ration it (see Color) */
+
+    /* type roles: size / weight / tracking are set together, never ad hoc */
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+    --type-title: 600 1.375rem/1.3 var(--font-sans);     /* tracking -0.02em */
+    --type-section: 600 1rem/1.4 var(--font-sans);       /* tracking -0.01em */
+    --type-body: 400 0.875rem/1.6 var(--font-sans);
+    --type-label: 500 0.8125rem/1.4 var(--font-sans);
+    --type-caption: 400 0.75rem/1.5 var(--font-sans);
+    --type-data: 400 0.78rem/1.5 var(--font-mono);
+
+    /* spacing: 4px base; rhythm is 8 inside a group, 16 between groups, 32 between sections */
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+    --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-16: 64px;
+
+    --radius-s: 6px;           /* controls, inputs, chips */
+    --radius-m: 12px;          /* cards, menus, modals */
+    --radius-full: 9999px;     /* pills, avatars */
+
+    /* elevation: layered low-alpha shadows, one recipe per tier */
+    --shadow-raised: 0 1px 2px rgba(26, 23, 18, 0.04), 0 2px 4px rgba(26, 23, 18, 0.04);
+    --shadow-float: 0 1px 1px rgba(26, 23, 18, 0.02), 0 4px 8px -4px rgba(26, 23, 18, 0.06), 0 16px 24px -8px rgba(26, 23, 18, 0.08);
+
+    /* motion: nothing animates by default; when it must, one easing, three durations */
+    --ease: cubic-bezier(0.2, 0.8, 0.3, 1);
+    --duration-state: 150ms;   /* hovers, presses */
+    --duration-reveal: 200ms;  /* menus, popovers */
+    --duration-overlay: 300ms; /* modals, drawers */
+
+    --focus-ring: 0 0 0 2px var(--background-2), 0 0 0 4px var(--brand);
   }
   [data-theme="dark"] {
-    --bg: #201f1c;
-    --surface: #2a2925;
-    --ink-1: #eceae4;
-    --ink-2: #b3afa5;
-    --ink-3: #7c7870;
-    --line: #3a3833;
+    --background-1: #151412;
+    --background-2: #1e1d1a;
+
+    --gray-100: #242320;
+    --gray-200: #2a2926;
+    --gray-300: #33322d;
+    --gray-400: #3e3c36;
+    --gray-500: #4c4a43;
+    --gray-600: #615e55;
+    --gray-700: #817d72;
+    --gray-800: #9d988c;
+    --gray-900: #c3bfb4;
+    --gray-1000: #edebe4;
+
     --brand: #7fa88a;
-    --brand-ink: #1c1b18;
+    --brand-hover: #8fb599;
+    --brand-ink: #171613;
     --accent: #d3a94e;
-    --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+    --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-float: 0 1px 1px rgba(0, 0, 0, 0.2), 0 4px 8px -4px rgba(0, 0, 0, 0.4), 0 16px 24px -8px rgba(0, 0, 0, 0.5);
   }
 
   /* ============ sheet chrome (not product law, just this page) ============ */
-  body { margin: 0; padding: 2rem clamp(1rem, 6vw, 4rem) 6rem; background: var(--bg); color: var(--ink-1); font-family: var(--font); line-height: 1.5; }
-  header.sheet { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2.5rem; }
-  header.sheet h1 { font-size: 1.4rem; margin: 0; }
-  header.sheet p { color: var(--ink-2); margin: 0; font-size: 0.9rem; }
-  #theme-toggle { margin-left: auto; border: 1px solid var(--line); background: var(--surface); color: var(--ink-1); border-radius: var(--radius-s); padding: 0.35rem 0.8rem; cursor: pointer; font: inherit; font-size: 0.85rem; }
-  section.box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-m); box-shadow: var(--shadow-1); padding: 1.5rem; margin-bottom: 2rem; max-width: 60rem; }
-  h2.sec-title { font-size: 1.05rem; margin: 0 0 0.25rem; }
-  p.annotation { color: var(--ink-2); font-size: 0.85rem; margin: 0 0 1.25rem; max-width: 46rem; }
-  .demo { padding: 1.25rem; border: 1px dashed var(--line); border-radius: var(--radius-s); display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
-  ul.spec { color: var(--ink-2); font-size: 0.85rem; margin: 1rem 0 0; padding-left: 1.2rem; }
-  ul.spec code { font-family: var(--mono); font-size: 0.9em; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: var(--space-8) clamp(1rem, 6vw, 4rem) var(--space-16); background: var(--background-1); color: var(--gray-1000); font: var(--type-body); }
+  header.sheet { display: flex; align-items: baseline; gap: var(--space-4); margin-bottom: var(--space-10); max-width: 60rem; }
+  header.sheet h1 { font: var(--type-title); letter-spacing: -0.02em; margin: 0; }
+  header.sheet p { color: var(--gray-900); margin: 0; }
+  #theme-toggle { margin-left: auto; border: 1px solid var(--gray-400); background: var(--background-2); color: var(--gray-1000); border-radius: var(--radius-s); padding: 0.35rem 0.8rem; cursor: pointer; font: var(--type-label); }
+  #theme-toggle:hover { border-color: var(--gray-500); }
+  #theme-toggle:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  section.box { background: var(--background-2); border: 1px solid var(--gray-300); border-radius: var(--radius-m); box-shadow: var(--shadow-raised); padding: var(--space-6); margin-bottom: var(--space-8); max-width: 60rem; }
+  h2.sec-title { font: var(--type-section); letter-spacing: -0.01em; margin: 0 0 var(--space-1); }
+  p.annotation { color: var(--gray-900); margin: 0 0 var(--space-4); max-width: 46rem; }
+  .demo { padding: var(--space-4); border: 1px dashed var(--gray-400); border-radius: var(--radius-s); display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  ul.spec { color: var(--gray-900); font: var(--type-caption); margin: var(--space-4) 0 0; padding-left: 1.2rem; }
+  ul.spec li { margin-bottom: var(--space-1); }
+  ul.spec code, .token-name { font: var(--type-data); color: var(--gray-800); }
 
-  /* ============ token swatches ============ */
-  .swatches { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-  .swatch { width: 8.5rem; border: 1px solid var(--line); border-radius: var(--radius-s); overflow: hidden; font-size: 0.75rem; }
-  .swatch .chip { height: 2.6rem; }
-  .swatch .label { padding: 0.35rem 0.5rem; font-family: var(--mono); color: var(--ink-2); }
+  /* ============ color ramp strip (the sheet's teaching device) ============ */
+  .ramp { display: flex; border-radius: var(--radius-s); overflow: hidden; border: 1px solid var(--gray-300); }
+  .ramp div { flex: 1; height: 3rem; }
+  .ramp-bands { display: flex; margin-top: var(--space-2); font: var(--type-caption); color: var(--gray-800); text-align: center; }
+  .ramp-bands span { border-top: 1px solid var(--gray-500); padding-top: var(--space-1); margin: 0 2px; }
+  .roles { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
+  .role-chip { display: flex; align-items: center; gap: var(--space-2); border: 1px solid var(--gray-300); border-radius: var(--radius-full); padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1); font: var(--type-caption); color: var(--gray-900); }
+  .role-chip i { width: 1.1rem; height: 1.1rem; border-radius: var(--radius-full); border: 1px solid var(--gray-400); display: block; }
 
-  /* ============ example component: button (the box pattern in action) ============ */
-  .btn { font: inherit; font-size: 0.9rem; border-radius: var(--radius-s); padding: 0.45rem 1rem; cursor: pointer; border: 1px solid transparent; }
-  .btn-primary { background: var(--brand); color: var(--brand-ink); }
-  .btn-secondary { background: transparent; color: var(--ink-1); border-color: var(--line); }
-  .btn-quiet { background: transparent; color: var(--ink-2); }
-  .btn:disabled { opacity: 0.45; cursor: default; }
-
-  /* ============ type scale ============ */
-  .type-row { border-bottom: 1px solid var(--line); padding: 0.5rem 0; }
+  /* ============ type specimens ============ */
+  .type-row { border-bottom: 1px solid var(--gray-300); padding: var(--space-3) 0; display: flex; align-items: baseline; gap: var(--space-4); }
   .type-row:last-child { border-bottom: none; }
-  .type-row small { color: var(--ink-3); font-family: var(--mono); display: block; }
+  .type-row small { font: var(--type-data); color: var(--gray-700); margin-left: auto; white-space: nowrap; }
+
+  /* ============ spacing scale bar ============ */
+  .space-scale { display: flex; align-items: flex-end; gap: var(--space-3); }
+  .space-scale figure { margin: 0; text-align: center; }
+  .space-scale i { display: block; background: var(--gray-500); border-radius: 2px; width: 100%; }
+  .space-scale figcaption { font: var(--type-data); color: var(--gray-700); margin-top: var(--space-1); }
+
+  /* ============ example component: button ============ */
+  .btn { font: var(--type-label); border-radius: var(--radius-s); padding: 0 var(--space-4); height: 2.25rem; cursor: pointer; border: 1px solid transparent; background: transparent; color: var(--gray-1000); transition: background-color var(--duration-state) var(--ease), border-color var(--duration-state) var(--ease); }
+  .btn-primary { background: var(--brand); color: var(--brand-ink); }
+  .btn-primary:hover { background: var(--brand-hover); }
+  .btn-secondary { background: var(--background-2); border-color: var(--gray-400); }
+  .btn-secondary:hover { border-color: var(--gray-500); background: var(--gray-100); }
+  .btn-secondary:active { background: var(--gray-200); }
+  .btn-quiet { color: var(--gray-900); }
+  .btn-quiet:hover { background: var(--gray-100); }
+  .btn:disabled { background: var(--gray-100); border-color: var(--gray-300); color: var(--gray-700); cursor: default; }
+  .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .btn.show-focus { box-shadow: var(--focus-ring); }
+  .btn-small { height: 1.875rem; font-size: 0.75rem; padding: 0 var(--space-3); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
 </style>
 </head>
 <body>
@@ -82,31 +159,107 @@
 <section class="box">
   <h2 class="sec-title">How this sheet works</h2>
   <p class="annotation">
-    One section per component or foundation, each a boxed demo with a one-paragraph annotation
-    stating the law it carries. Foundations first (Color, Voice, Type, Shape), then the state
-    grammar, then components. One home per component: extend a section in place rather than
-    adding a duplicate; a section that gets superseded folds into its successor in the same
-    change. Every demo must render correctly in both themes (the toggle above). Conformance
-    against this sheet means computed styles and interaction, not vibes.
+    One section per foundation or component, each a boxed demo with a one-paragraph annotation
+    stating the law it carries. Foundations first (Color, Type, Spacing, Shape and elevation,
+    Motion, Voice), then the state grammar, then components. One home per component: extend a
+    section in place rather than adding a duplicate. Every demo must render correctly in both
+    themes (the toggle above), and conformance against this sheet means computed styles and
+    interaction, not vibes. Components reference tokens only; if a value is not a token, it
+    does not ship.
   </p>
 </section>
 
 <section class="box">
   <h2 class="sec-title">Color</h2>
   <p class="annotation">
-    All color comes from the token block at the top of this file; components never carry raw
-    values. Ration meaning-hue: decide what the accent means (one meaning only) and write that
-    meaning here when ruled. Palette expansion is a maintainer-only ruling; propose, never add.
+    One gray ramp carries the whole interface, and the step number encodes the job: 100 to 300
+    are tinted fills and hovers, 400 to 600 are borders, 700 to 800 are muted foreground, 900
+    to 1000 are text. Rank information with the ramp before reaching for a hue. Meaning-color
+    is rationed: brand marks the product's hand (one filled action per surface), the accent
+    means exactly one thing project-wide (record what, here, when ruled), and state is never
+    signaled by color alone. Palette expansion is a maintainer-only ruling; propose, never add.
   </p>
-  <div class="swatches">
-    <div class="swatch"><div class="chip" style="background:var(--bg)"></div><div class="label">--bg</div></div>
-    <div class="swatch"><div class="chip" style="background:var(--surface)"></div><div class="label">--surface</div></div>
-    <div class="swatch"><div class="chip" style="background:var(--ink-1)"></div><div class="label">--ink-1</div></div>
-    <div class="swatch"><div class="chip" style="background:var(--ink-2)"></div><div class="label">--ink-2</div></div>
-    <div class="swatch"><div class="chip" style="background:var(--ink-3)"></div><div class="label">--ink-3</div></div>
-    <div class="swatch"><div class="chip" style="background:var(--line)"></div><div class="label">--line</div></div>
-    <div class="swatch"><div class="chip" style="background:var(--brand)"></div><div class="label">--brand</div></div>
-    <div class="swatch"><div class="chip" style="background:var(--accent)"></div><div class="label">--accent</div></div>
+  <div class="ramp">
+    <div style="background:var(--gray-100)"></div><div style="background:var(--gray-200)"></div>
+    <div style="background:var(--gray-300)"></div><div style="background:var(--gray-400)"></div>
+    <div style="background:var(--gray-500)"></div><div style="background:var(--gray-600)"></div>
+    <div style="background:var(--gray-700)"></div><div style="background:var(--gray-800)"></div>
+    <div style="background:var(--gray-900)"></div><div style="background:var(--gray-1000)"></div>
+  </div>
+  <div class="ramp-bands">
+    <span style="flex:3">fills and hovers</span><span style="flex:3">borders</span><span style="flex:2">muted foreground</span><span style="flex:2">text</span>
+  </div>
+  <div class="roles">
+    <span class="role-chip"><i style="background:var(--background-1)"></i>background-1, the page</span>
+    <span class="role-chip"><i style="background:var(--background-2)"></i>background-2, raised surfaces</span>
+    <span class="role-chip"><i style="background:var(--brand)"></i>brand, the product's hand</span>
+    <span class="role-chip"><i style="background:var(--accent)"></i>accent, the reserved meaning-hue</span>
+  </div>
+  <ul class="spec">
+    <li>Text on its background keeps at least 4.5:1 contrast, both themes.</li>
+    <li>Interaction states step along the ramp (fill 100 to 200 to 300, border 400 to 500 to 600), never invent an off-ramp value.</li>
+  </ul>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Type</h2>
+  <p class="annotation">
+    Two families: the sans for everything, the mono for code, data, and token names. Each role
+    sets size, weight, line-height, and tracking together as one token; components apply a role,
+    never hand-set properties. Large sizes tighten tracking; body never does. At most two weights
+    per view.
+  </p>
+  <div class="type-row"><span style="font:var(--type-title); letter-spacing:-0.02em;">Page title</span><small>--type-title · 22px 600 · -0.02em</small></div>
+  <div class="type-row"><span style="font:var(--type-section); letter-spacing:-0.01em;">Section title</span><small>--type-section · 16px 600 · -0.01em</small></div>
+  <div class="type-row"><span style="font:var(--type-body)">Body text, set for reading at a calm 1.6 line height.</span><small>--type-body · 14px 400</small></div>
+  <div class="type-row"><span style="font:var(--type-label)">Label, for controls and single lines</span><small>--type-label · 13px 500</small></div>
+  <div class="type-row"><span style="font:var(--type-caption); color:var(--gray-900);">Caption, secondary and quiet</span><small>--type-caption · 12px 400</small></div>
+  <div class="type-row"><span style="font:var(--type-data)">data-and-code · 1,024 · v1.2.0</span><small>--type-data · mono</small></div>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Spacing</h2>
+  <p class="annotation">
+    A 4px base scale, and a rhythm: 8 inside a group, 16 between groups, 32 between sections.
+    Cards pad 24. If a gap is not on the scale, the layout is guessing.
+  </p>
+  <div class="space-scale">
+    <figure style="width:4px"><i style="height:4px"></i><figcaption>4</figcaption></figure>
+    <figure style="width:8px"><i style="height:8px"></i><figcaption>8</figcaption></figure>
+    <figure style="width:12px"><i style="height:12px"></i><figcaption>12</figcaption></figure>
+    <figure style="width:16px"><i style="height:16px"></i><figcaption>16</figcaption></figure>
+    <figure style="width:24px"><i style="height:24px"></i><figcaption>24</figcaption></figure>
+    <figure style="width:32px"><i style="height:32px"></i><figcaption>32</figcaption></figure>
+    <figure style="width:40px"><i style="height:40px"></i><figcaption>40</figcaption></figure>
+    <figure style="width:64px"><i style="height:64px"></i><figcaption>64</figcaption></figure>
+  </div>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Shape and elevation</h2>
+  <p class="annotation">
+    Two radii plus the pill: 6 for controls and inputs, 12 for cards and menus. Never mix rounded
+    and sharp corners in one view. Elevation is a ramp of layered low-alpha shadows: raised for
+    cards, float for menus and popovers. A tier beyond float is a ruling.
+  </p>
+  <div class="demo">
+    <div style="width:8rem;height:4.5rem;background:var(--background-2);border:1px solid var(--gray-300);border-radius:var(--radius-s);display:grid;place-items:center;font:var(--type-data);color:var(--gray-700);">radius-s</div>
+    <div style="width:8rem;height:4.5rem;background:var(--background-2);border:1px solid var(--gray-300);border-radius:var(--radius-m);box-shadow:var(--shadow-raised);display:grid;place-items:center;font:var(--type-data);color:var(--gray-700);">raised</div>
+    <div style="width:8rem;height:4.5rem;background:var(--background-2);border:1px solid var(--gray-300);border-radius:var(--radius-m);box-shadow:var(--shadow-float);display:grid;place-items:center;font:var(--type-data);color:var(--gray-700);">float</div>
+    <div style="height:2.25rem;padding:0 var(--space-4);background:var(--gray-100);border:1px solid var(--gray-300);border-radius:var(--radius-full);display:grid;place-items:center;font:var(--type-data);color:var(--gray-700);">pill</div>
+  </div>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Motion</h2>
+  <p class="annotation">
+    Nothing animates by default; motion exists to clarify a change, never to decorate. When it
+    earns its place: one easing, three durations (150ms state changes, 200ms reveals, 300ms
+    overlays), and reduced-motion preferences are always honored. Reserve continuous animation
+    for genuinely live things; stillness is how settled states read as settled.
+  </p>
+  <div class="demo">
+    <button class="btn btn-secondary" type="button">Hover me: 150ms state ease</button>
   </div>
 </section>
 
@@ -115,33 +268,16 @@
   <p class="annotation">
     This section is law for every string the product ships. Sheet prose and internal docs stay
     normal writing; user-authored and agent-authored content is not app copy and is out of scope.
-    Two starter rules below are near-universal; add the project's own as they get ruled, and keep
-    the list short enough to actually check against.
+    Starters below are near-universal; add the project's own rules as they get ruled, and keep the
+    list short enough to check against.
   </p>
   <ul class="spec">
     <li><strong>Say less.</strong> Helper text only when the affordance cannot speak for itself; default none.</li>
-    <li><strong>Calm register.</strong> Sentence case; no all-caps labels; no urgency theatrics; state the thing, do not perform it.</li>
+    <li><strong>Calm register.</strong> Sentence case everywhere; no all-caps labels; no urgency theatrics; state the thing, do not perform it.</li>
+    <li><strong>Controls say what they do.</strong> Verb plus object ("Save changes"), the same name through the whole flow; never "OK" or "Submit".</li>
+    <li><strong>Errors direct, never apologize.</strong> What happened plus the next step; an empty state points to the first action.</li>
     <li><em>(Add the project's ruled voice rules here, one line each.)</em></li>
   </ul>
-</section>
-
-<section class="box">
-  <h2 class="sec-title">Type</h2>
-  <p class="annotation">One family, few sizes. Add a size to this scale only through a ruling; components reference the scale, never ad-hoc values.</p>
-  <div class="type-row" style="font-size:1.4rem; font-weight:600;">Page title<small>1.4rem / 600</small></div>
-  <div class="type-row" style="font-size:1.05rem; font-weight:600;">Section title<small>1.05rem / 600</small></div>
-  <div class="type-row" style="font-size:0.9rem;">Body<small>0.9rem / 400</small></div>
-  <div class="type-row" style="font-size:0.85rem; color:var(--ink-2);">Secondary<small>0.85rem / 400 / ink-2</small></div>
-  <div class="type-row" style="font-size:0.75rem; color:var(--ink-3);">Caption<small>0.75rem / 400 / ink-3</small></div>
-</section>
-
-<section class="box">
-  <h2 class="sec-title">Shape and elevation</h2>
-  <p class="annotation">Two radii, one shadow. Surfaces sit on <code>--bg</code> as <code>--surface</code> cards with hairline borders; elevation beyond <code>--shadow-1</code> is a ruling.</p>
-  <div class="demo">
-    <div style="width:7rem;height:4rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-s);box-shadow:var(--shadow-1);display:grid;place-items:center;font-size:0.75rem;color:var(--ink-3);">radius-s</div>
-    <div style="width:7rem;height:4rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-m);box-shadow:var(--shadow-1);display:grid;place-items:center;font-size:0.75rem;color:var(--ink-3);">radius-m</div>
-  </div>
 </section>
 
 <section class="box">
@@ -150,7 +286,7 @@
     Placeholder until the product has states. When it does, this section becomes the one home for
     every state's full treatment (color, glyph, motion, label), and every other section points here
     instead of re-specifying a state. Labels come from one source module in code; no view invents
-    status strings.
+    status strings. State is never color alone: pair every state hue with a glyph or word.
   </p>
 </section>
 
@@ -158,18 +294,22 @@
   <h2 class="sec-title">Controls</h2>
   <p class="annotation">
     The example component, and the pattern every new section follows: full component, all variants
-    and states in one demo, spec notes underneath. Primary is the only brand-filled control on a
-    given surface.
+    and every state in one demo, spec notes underneath. Primary is the only brand-filled control on
+    a surface; everything else ranks by the gray ramp.
   </p>
   <div class="demo">
-    <button class="btn btn-primary" type="button">Primary</button>
+    <button class="btn btn-primary" type="button">Save changes</button>
     <button class="btn btn-secondary" type="button">Secondary</button>
     <button class="btn btn-quiet" type="button">Quiet</button>
+    <button class="btn btn-secondary show-focus" type="button">Focused</button>
     <button class="btn btn-primary" type="button" disabled>Disabled</button>
+    <button class="btn btn-secondary btn-small" type="button">Small</button>
   </div>
   <ul class="spec">
-    <li>Padding <code>0.45rem 1rem</code>, radius <code>--radius-s</code>, no text transform.</li>
-    <li>Disabled is <code>opacity 0.45</code>, never a third gray.</li>
+    <li>Heights: 36px default, 30px small; label role type; radius <code>--radius-s</code>.</li>
+    <li>Hover and press step along the ramp (<code>gray-100</code>, <code>gray-200</code>; border <code>400</code> to <code>500</code>); primary darkens to <code>--brand-hover</code>.</li>
+    <li>Focus is the two-layer ring (<code>--focus-ring</code>) on <code>:focus-visible</code>, on every focusable thing, both themes.</li>
+    <li>Disabled is the <code>gray-100</code> fill with <code>gray-700</code> text, never an opacity trick.</li>
   </ul>
 </section>
 

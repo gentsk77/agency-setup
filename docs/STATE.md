@@ -4,7 +4,7 @@ One-screen handoff note. Overwrite freely; keep current.
 
 ## Orientation
 
-The library is built as of 2026-07-14: doctrine P01 to P10, nine registered components (design-lane at 1.1.0 after a review-driven gap fix, the rest at 1.0.0), four profiles, the SETUP.md router, and the harvest procedure. Design and build plan: `docs/specs/` and `docs/plans/`. Nothing has been installed into a target repo yet.
+The library is built as of 2026-07-14: doctrine P01 to P10, nine registered components (design-lane at 1.3.0 after a gap fix, a taste pass, and a generated design.md twin; the rest at 1.0.0), four profiles, the SETUP.md router, and the harvest procedure. Design and build plan: `docs/specs/` and `docs/plans/`. Nothing has been installed into a target repo yet.
 
 ## Now
 
