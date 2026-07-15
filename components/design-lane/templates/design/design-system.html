@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{PROJECT_NAME}} design system</title>
+<style>
+  /* ============================================================
+     TOKENS. The only place raw values live. Components below use
+     var() references exclusively; a new token is a maintainer
+     question, not a default. Replace this neutral starter palette
+     with the project's own as it gets ruled.
+     ============================================================ */
+  :root {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --ink-1: #23211c;      /* primary text */
+    --ink-2: #5c584f;      /* secondary text */
+    --ink-3: #98938a;      /* tertiary text, quiet glyphs */
+    --line: #e4e1da;       /* hairlines, borders */
+    --brand: #4a6b52;      /* the product's hand: actions, selection */
+    --brand-ink: #ffffff;  /* text on brand */
+    --accent: #b98a2f;     /* the one reserved meaning-hue; ration it (see Color notes) */
+    --radius-s: 6px;
+    --radius-m: 10px;
+    --shadow-1: 0 1px 3px rgba(20, 18, 12, 0.08);
+    --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  }
+  [data-theme="dark"] {
+    --bg: #201f1c;
+    --surface: #2a2925;
+    --ink-1: #eceae4;
+    --ink-2: #b3afa5;
+    --ink-3: #7c7870;
+    --line: #3a3833;
+    --brand: #7fa88a;
+    --brand-ink: #1c1b18;
+    --accent: #d3a94e;
+    --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ============ sheet chrome (not product law, just this page) ============ */
+  body { margin: 0; padding: 2rem clamp(1rem, 6vw, 4rem) 6rem; background: var(--bg); color: var(--ink-1); font-family: var(--font); line-height: 1.5; }
+  header.sheet { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2.5rem; }
+  header.sheet h1 { font-size: 1.4rem; margin: 0; }
+  header.sheet p { color: var(--ink-2); margin: 0; font-size: 0.9rem; }
+  #theme-toggle { margin-left: auto; border: 1px solid var(--line); background: var(--surface); color: var(--ink-1); border-radius: var(--radius-s); padding: 0.35rem 0.8rem; cursor: pointer; font: inherit; font-size: 0.85rem; }
+  section.box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-m); box-shadow: var(--shadow-1); padding: 1.5rem; margin-bottom: 2rem; max-width: 60rem; }
+  h2.sec-title { font-size: 1.05rem; margin: 0 0 0.25rem; }
+  p.annotation { color: var(--ink-2); font-size: 0.85rem; margin: 0 0 1.25rem; max-width: 46rem; }
+  .demo { padding: 1.25rem; border: 1px dashed var(--line); border-radius: var(--radius-s); display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  ul.spec { color: var(--ink-2); font-size: 0.85rem; margin: 1rem 0 0; padding-left: 1.2rem; }
+  ul.spec code { font-family: var(--mono); font-size: 0.9em; }
+
+  /* ============ token swatches ============ */
+  .swatches { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .swatch { width: 8.5rem; border: 1px solid var(--line); border-radius: var(--radius-s); overflow: hidden; font-size: 0.75rem; }
+  .swatch .chip { height: 2.6rem; }
+  .swatch .label { padding: 0.35rem 0.5rem; font-family: var(--mono); color: var(--ink-2); }
+
+  /* ============ example component: button (the box pattern in action) ============ */
+  .btn { font: inherit; font-size: 0.9rem; border-radius: var(--radius-s); padding: 0.45rem 1rem; cursor: pointer; border: 1px solid transparent; }
+  .btn-primary { background: var(--brand); color: var(--brand-ink); }
+  .btn-secondary { background: transparent; color: var(--ink-1); border-color: var(--line); }
+  .btn-quiet { background: transparent; color: var(--ink-2); }
+  .btn:disabled { opacity: 0.45; cursor: default; }
+
+  /* ============ type scale ============ */
+  .type-row { border-bottom: 1px solid var(--line); padding: 0.5rem 0; }
+  .type-row:last-child { border-bottom: none; }
+  .type-row small { color: var(--ink-3); font-family: var(--mono); display: block; }
+</style>
+</head>
+<body>
+<header class="sheet">
+  <h1>{{PROJECT_NAME}} design system</h1>
+  <p>Visual source of truth for <strong>built</strong> design. Unbuilt design stages in proposals.</p>
+  <button id="theme-toggle" type="button">Toggle theme</button>
+</header>
+
+<section class="box">
+  <h2 class="sec-title">How this sheet works</h2>
+  <p class="annotation">
+    One section per component or foundation, each a boxed demo with a one-paragraph annotation
+    stating the law it carries. Foundations first (Color, Voice, Type, Shape), then the state
+    grammar, then components. One home per component: extend a section in place rather than
+    adding a duplicate; a section that gets superseded folds into its successor in the same
+    change. Every demo must render correctly in both themes (the toggle above). Conformance
+    against this sheet means computed styles and interaction, not vibes.
+  </p>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Color</h2>
+  <p class="annotation">
+    All color comes from the token block at the top of this file; components never carry raw
+    values. Ration meaning-hue: decide what the accent means (one meaning only) and write that
+    meaning here when ruled. Palette expansion is a maintainer-only ruling; propose, never add.
+  </p>
+  <div class="swatches">
+    <div class="swatch"><div class="chip" style="background:var(--bg)"></div><div class="label">--bg</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--surface)"></div><div class="label">--surface</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ink-1)"></div><div class="label">--ink-1</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ink-2)"></div><div class="label">--ink-2</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--ink-3)"></div><div class="label">--ink-3</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--line)"></div><div class="label">--line</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--brand)"></div><div class="label">--brand</div></div>
+    <div class="swatch"><div class="chip" style="background:var(--accent)"></div><div class="label">--accent</div></div>
+  </div>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Voice &amp; microcopy</h2>
+  <p class="annotation">
+    This section is law for every string the product ships. Sheet prose and internal docs stay
+    normal writing; user-authored and agent-authored content is not app copy and is out of scope.
+    Two starter rules below are near-universal; add the project's own as they get ruled, and keep
+    the list short enough to actually check against.
+  </p>
+  <ul class="spec">
+    <li><strong>Say less.</strong> Helper text only when the affordance cannot speak for itself; default none.</li>
+    <li><strong>Calm register.</strong> Sentence case; no all-caps labels; no urgency theatrics; state the thing, do not perform it.</li>
+    <li><em>(Add the project's ruled voice rules here, one line each.)</em></li>
+  </ul>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Type</h2>
+  <p class="annotation">One family, few sizes. Add a size to this scale only through a ruling; components reference the scale, never ad-hoc values.</p>
+  <div class="type-row" style="font-size:1.4rem; font-weight:600;">Page title<small>1.4rem / 600</small></div>
+  <div class="type-row" style="font-size:1.05rem; font-weight:600;">Section title<small>1.05rem / 600</small></div>
+  <div class="type-row" style="font-size:0.9rem;">Body<small>0.9rem / 400</small></div>
+  <div class="type-row" style="font-size:0.85rem; color:var(--ink-2);">Secondary<small>0.85rem / 400 / ink-2</small></div>
+  <div class="type-row" style="font-size:0.75rem; color:var(--ink-3);">Caption<small>0.75rem / 400 / ink-3</small></div>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Shape and elevation</h2>
+  <p class="annotation">Two radii, one shadow. Surfaces sit on <code>--bg</code> as <code>--surface</code> cards with hairline borders; elevation beyond <code>--shadow-1</code> is a ruling.</p>
+  <div class="demo">
+    <div style="width:7rem;height:4rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-s);box-shadow:var(--shadow-1);display:grid;place-items:center;font-size:0.75rem;color:var(--ink-3);">radius-s</div>
+    <div style="width:7rem;height:4rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-m);box-shadow:var(--shadow-1);display:grid;place-items:center;font-size:0.75rem;color:var(--ink-3);">radius-m</div>
+  </div>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Status grammar</h2>
+  <p class="annotation">
+    Placeholder until the product has states. When it does, this section becomes the one home for
+    every state's full treatment (color, glyph, motion, label), and every other section points here
+    instead of re-specifying a state. Labels come from one source module in code; no view invents
+    status strings.
+  </p>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Controls</h2>
+  <p class="annotation">
+    The example component, and the pattern every new section follows: full component, all variants
+    and states in one demo, spec notes underneath. Primary is the only brand-filled control on a
+    given surface.
+  </p>
+  <div class="demo">
+    <button class="btn btn-primary" type="button">Primary</button>
+    <button class="btn btn-secondary" type="button">Secondary</button>
+    <button class="btn btn-quiet" type="button">Quiet</button>
+    <button class="btn btn-primary" type="button" disabled>Disabled</button>
+  </div>
+  <ul class="spec">
+    <li>Padding <code>0.45rem 1rem</code>, radius <code>--radius-s</code>, no text transform.</li>
+    <li>Disabled is <code>opacity 0.45</code>, never a third gray.</li>
+  </ul>
+</section>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var saved = localStorage.getItem("sheet-theme");
+    if (saved) root.setAttribute("data-theme", saved);
+    document.getElementById("theme-toggle").addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "dark" ? "" : "dark";
+      if (next) { root.setAttribute("data-theme", next); } else { root.removeAttribute("data-theme"); }
+      localStorage.setItem("sheet-theme", next);
+    });
+  })();
+</script>
+</body>
+</html>

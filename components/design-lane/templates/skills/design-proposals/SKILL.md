@@ -1,22 +1,65 @@
 ---
 name: design-proposals
-description: How design changes stage, get approved, get implemented, and converge into the design system. Use when capturing a design session as a proposal, implementing an approved proposal, or checking whether a visual change conforms.
+description: How the design system is established, how design changes stage as proposals, get approved, get implemented, and converge back into the system. Use when bootstrapping the design system, capturing a design session as a proposal, or implementing an approved proposal.
 ---
 
-# Design proposals: the lifecycle
+# Design proposals: establishment and lifecycle
 
-`{{DESIGN_SYSTEM_PATH}}` is the visual source of truth for **built** design. Unbuilt design never edits it directly.
+`{{DESIGN_SYSTEM_PATH}}` is the visual source of truth for **built** design. `design/proposals/` holds design that is **approved but not yet built**. Never confuse the two: a proposal becomes law only when it ships and converges into the sheet. The visual rules are the `design-conventions` skill.
 
-## The lifecycle
+## Establishing the design system (once)
 
-1. **Stage.** A design session's output becomes a proposal package in `design/proposals/<slug>/`: the mock or spec, the rationale, and the design-system sections it would change. Status: `draft`.
-2. **Approve.** The maintainer approves the proposal (status: `ready-for-eng`). The proposer never self-approves.
-3. **Implement.** The implementing lane builds against the proposal. Conformance means computed styles and interaction match the proposal, not vibes.
-4. **Converge.** In the same change that ships the implementation: fold the proposal's content into `{{DESIGN_SYSTEM_PATH}}` (it now describes built reality) and archive the proposal folder. The sheet and the app never disagree for longer than one merge.
+The sheet is not an upfront token exercise; it is born by consolidation. The proven path:
 
-## Invariants
+1. Start from the installed starter sheet at `{{DESIGN_SYSTEM_PATH}}`: a single self-contained HTML file with the token block, a theme toggle, and the section pattern (boxed demo + annotation + spec notes).
+2. Design the first real surfaces as ordinary mocks; iterate with the maintainer. Mocks are iteration-scoped and disposable.
+3. When the first mocks get approved and built, **consolidate what shipped into the sheet**: replace the starter palette with the ruled tokens, fill the Voice section with the ruled rules, add one section per shipped component. Archive the mocks; the sheet is what survives.
+4. From that point the flow inverts to sheet-first forever: extend the sheet (via a proposal) and get approval, then implement.
 
-- Extend the design system and get approval first, then implement; never the reverse.
-- Verify every drawn component in every theme the product ships; a component verified in one theme is unverified.
-- Behavior-verified-but-nonconforming is a failure, not a partial pass.
-- Visual PRs name the design-system sections they conform to.
+Section order the sheet keeps: foundations first (Color, Voice & microcopy, Type, Shape and elevation), then shared grammars (states, chips), then components. One home per component (consolidation discipline in `design-conventions`).
+
+## Creating a proposal (design session output)
+
+1. One folder: `design/proposals/<yyyy-mm-dd-slug>/`.
+2. `proposals.html`: the mock. **Reuse the sheet's `<head>` and `<style>` verbatim** so it renders identically and convergence is later mechanical. Show each change as the **full component with the change applied**, integrated with related changes, never isolated deltas floating without context.
+3. `handoff.md`: the spec, from the template below. Status `draft`.
+4. Branch `design/<slug>`, PR per the repo's review posture. **The sheet stays untouched**; the whole point is that it does not change until implementation.
+
+### handoff.md template
+
+```
+# Design proposal: <title>
+
+| | |
+|---|---|
+| Status | draft / ready-for-eng / implemented / dropped |
+| Mock | proposals.html (this folder) |
+| Covers | tracker items #... |
+| Converges into | <sheet section per row, below> |
+
+## Proposals
+<table: # | ask | home section (= convergence target) | delta | status | maintainer's call>
+
+## Open decisions (maintainer)
+<the calls that gate ready-for-eng>
+```
+
+The **home section** column is load-bearing: it is the convergence map the implementing agent follows to fold each component into the sheet.
+
+## Statuses
+
+`draft` (in review) → `ready-for-eng` (maintainer approved; the proposer never self-approves) → `implemented` (built + converged + archived). A declined or superseded proposal is `dropped`: moved to `design/proposals/archive/` with a one-line note. Dropping is a status, not silent deletion; the trail stays.
+
+If the repo runs a tracker: an item carries a `design` label while in design, gains `design-ready` when its proposal is approved, and closes on implementation. The `design-ready` list is the eng queue.
+
+## Implementing a ready-for-eng proposal
+
+Point the implementing session at the folder. Definition of done; not done until every box holds:
+
+- [ ] Built, conforming to the mock (computed styles + interaction, every theme; the `design-conventions` bar).
+- [ ] Each component **converged into `{{DESIGN_SYSTEM_PATH}}`** at its home section per the convergence map. The sheet now holds the latest built design.
+- [ ] Proposal folder moved to `design/proposals/archive/<slug>/`.
+- [ ] Covered tracker items closed; `design-ready` labels removed.
+- [ ] `docs/STATE.md` and journal current.
+
+Skipping convergence or archival is exactly the drift this lifecycle exists to prevent. If the build must diverge from the mock (a better idea surfaces mid-build), change the mock or the sheet to match what shipped and say so; the sheet must always equal reality.
