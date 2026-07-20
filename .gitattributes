@@ -1,0 +1,5 @@
+# Git hooks and shell scripts must stay LF: a CRLF in the shebang breaks
+# execution on a fresh checkout (D7 enforcement depends on these running).
+scripts/hooks/pre-commit text eol=lf
+scripts/hooks/pre-push text eol=lf
+*.sh text eol=lf

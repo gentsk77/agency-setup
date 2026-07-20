@@ -1,0 +1,14 @@
+#!/bin/sh
+# agency-setup D7: main is PR-only. Block direct pushes to the trunk.
+# Enable once per clone: git config core.hooksPath scripts/hooks
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/master)
+      echo "blocked: direct push to '$remote_ref' is not allowed (D7)." >&2
+      echo "Push a branch and merge through a PR instead." >&2
+      echo "(genuine emergency override: git push --no-verify)" >&2
+      exit 1
+      ;;
+  esac
+done
+exit 0
