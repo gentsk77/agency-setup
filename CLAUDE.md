@@ -13,7 +13,7 @@ A person-agnostic process library: doctrine (why), components (installables), SE
 |---|---|---|
 | `doctrine/` | Process principles P01... | Amendment only, logged in `doctrine/amendments.md`; never edit an adopted body |
 | `components/` | Versioned installables | Any template change bumps the version with a changelog entry; never silent edits |
-| `SETUP.md`, `profiles/`, `setup/harvest.md` | Router, presets, reverse flow | Keep consistent with the registry; SETUP.md may only reference files that exist |
+| `SETUP.md`, `profiles/`, `setup/harvest.md`, `setup/sources.md` | Router, presets, reverse flow (from live repos), inbound flow (external sources) | Keep consistent with the registry; SETUP.md may only reference files that exist |
 | `docs/STATE.md` | Handoff note | Overwrite freely, keep current |
 | `docs/journal.md` | Session log | Append-only |
 | `docs/decisions.md` | Rulings D1, D2, ... | Append-only; supersede via new D plus status stamp |
@@ -24,7 +24,7 @@ A person-agnostic process library: doctrine (why), components (installables), SE
 - **Person-agnostic:** roles only; no maintainer names, product names, or domain content from source repos. Mechanics cross in, domains stay out.
 - **Registry consistency:** `components/README.md` versions match every COMPONENT.md; profiles name only registered components.
 - **No em dashes** in any artifact (workspace rule).
-- **Git:** workspace house rules apply (`../AGENTS.md`): no commit or push without in-the-moment approval; private and local by default.
+- **Git:** workspace house rules apply (`../AGENTS.md`): no commit or push without in-the-moment approval. Changes to `main` go through a reviewed PR, never a direct commit (a client-side hook enforces this: `git config core.hooksPath scripts/hooks`; D7). Private GitHub remote.
 - **Maintainer gates:** doctrine amendments and component version bumps need explicit maintainer sign-off; harvest proposes, never applies unratified.
 
 ## Session end

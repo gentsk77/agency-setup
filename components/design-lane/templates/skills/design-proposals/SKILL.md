@@ -14,11 +14,24 @@ description: How the design system is established, how design changes stage as p
 The sheet is not an upfront token exercise; it is born by consolidation. The proven path:
 
 1. Start from the installed starter sheet at `{{DESIGN_SYSTEM_PATH}}`: a single self-contained HTML file with the token block, a theme toggle, and the section pattern (boxed demo + annotation + spec notes).
-2. Design the first real surfaces as ordinary mocks; iterate with the maintainer. Mocks are iteration-scoped and disposable.
-3. When the first mocks get approved and built, **consolidate what shipped into the sheet**: replace the starter palette with the ruled tokens, fill the Voice section with the ruled rules, add one section per shipped component. Archive the mocks; the sheet is what survives.
+2. At the first design session, ask the maintainer **one fork: establish the full design system now, or start low-fi?**
+   - **Full system now:** the system is established **with a component library**; that is the default posture, the way a working designer defaults to the company's system, not a question. The interview asks **which** library, leading with the recommended default recorded at install (from the library's vetted source registry; name it, e.g. "default is the registered base + motion pair; accept or name another"). Customization is welcome as theme and deltas on referenced components, never as re-built primitives.
+   - **Low-fi first:** legitimate for exploration; mocks are iteration-scoped and disposable. Record the standing expectation: a serious product graduates to the full system with components; low-fi is a phase, not a destination.
+   The **brand face and the icon set are ruled here** either way, on rendered specimens (two or three open-source candidates shown real, decided on sight), never picked from a name; both are open-source and self-hosted (see the sheet's Type and Iconography sections).
+3. When the first mocks get approved and built, **consolidate what shipped into the sheet**: replace the starter palette with the ruled tokens, set the ruled families and icon set, fill the Voice section with the ruled rules, add one section per shipped component (referencing the library per the sheet's components law; drawn sections only for the escalated exceptions). Archive the mocks; the sheet is what survives.
 4. From that point the flow inverts to sheet-first forever: extend the sheet (via a proposal) and get approval, then implement.
 
-Section order the sheet keeps: foundations first (Color, Type, Spacing, Shape and elevation, Motion, Voice & microcopy), then shared grammars (states, chips), then components. One home per component (consolidation discipline in `design-conventions`).
+Section order the sheet keeps: foundations first (Color, Type, Iconography, Spacing, Shape and elevation, Motion, Layout and scroll, Voice & microcopy), then shared grammars (state, overlays, chips), then components. One home per component (consolidation discipline in `design-conventions`).
+
+### Component sections: reference by default
+
+Components come from the project's library (the sheet's "Components: reference the library" law):
+
+- **Default (reference):** a proposal shows the **themed** library component (tokens applied) with the product's deltas; convergence updates the section's reference and deltas, never a re-drawn demo. Conformance is checked against the real themed component in the app, not a copy in the sheet. Foundations are consolidated into the sheet as owned law and drive the library's theme.
+- **Escalated exception (draw):** a product-specific component the library does not ship is composed from library primitives first; a fully drawn section (the Controls pattern) exists only when composition cannot express the design, and the maintainer ruled it so. A stack with no vetted library is a source-intake gap to flag, not a license to hand-build quietly.
+- **Constraint escalation:** when a library component cannot do what the design needs, state the constraint plainly and bring options (theme-level customization; extend the owned copy, cheap when the library is copy-in code the project owns; compose a custom component from primitives; re-scope the ask). The maintainer picks. Never silently build around the library.
+
+Which library is the base is ruled at establishment (default from the source registry); the foundations do not change with it, only what the component sections point at.
 
 ## Creating a proposal (design session output)
 

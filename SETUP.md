@@ -2,7 +2,7 @@
 
 You are an agent in some other repo (the **target**), pointed at this library to set up the target's working process. This file is your complete procedure. Read it fully before acting; you cannot invoke this repo's skills from your session, so this document is deliberately self-contained.
 
-The library's principles live in `doctrine/` (read `doctrine/README.md` plus any article you are about to install machinery for); the installables live in `components/` (registry: `components/README.md`); the presets live in `profiles/`.
+The library's principles live in `doctrine/` (read `doctrine/README.md` plus any article you are about to install machinery for); the installables live in `components/` (registry: `components/README.md`); the presets live in `profiles/`; vetted external material (component libraries, fonts, icon sets) is registered in `setup/sources.md`.
 
 ## Step 0: fresh install or upgrade?
 
@@ -26,6 +26,8 @@ The maintainer can override or mix ("docs-research plus steward"). Profiles are 
 **Q4. Git posture.** GitHub remote with CI, or local-only? Picks the ci-gates flavor (workflow vs pre-commit hook) and how dev-lanes degrades (see its COMPONENT.md).
 
 **Q5. Multi-agent now or later?** Gateway installs either way (the intake discipline is the durable part). If "later", note in the manifest that dev-lanes/design-lane charters are dormant until first dispatch.
+
+**Carry the source defaults.** If design-lane installs, always record the vetted sources matching the target's stack (from `setup/sources.md`: the component library base, motion layer, font catalog, icon set) in the setup manifest as the project's **default component stack**. This is a reference, not an install, and not a question: components-by-default is the standing posture (a designer does not ask whether to use the company's system). The establishment interview in the `design-proposals` skill is where the maintainer confirms **which** library (default = the recorded one) and where anything actually gets adopted; the design system's own law governs how it all looks and when it animates.
 
 ## Step 2: resolve the component set
 

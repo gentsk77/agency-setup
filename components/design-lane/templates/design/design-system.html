@@ -57,6 +57,8 @@
     --radius-m: 12px;          /* cards, menus, modals */
     --radius-full: 9999px;     /* pills, avatars */
 
+    --content-max: 72rem;      /* reading column cap; swap the value, keep the role (see Layout) */
+
     /* elevation: layered low-alpha shadows, one recipe per tier */
     --shadow-raised: 0 1px 2px rgba(26, 23, 18, 0.04), 0 2px 4px rgba(26, 23, 18, 0.04);
     --shadow-float: 0 1px 1px rgba(26, 23, 18, 0.02), 0 4px 8px -4px rgba(26, 23, 18, 0.06), 0 16px 24px -8px rgba(26, 23, 18, 0.08);
@@ -144,6 +146,27 @@
   .btn.show-focus { box-shadow: var(--focus-ring); }
   .btn-small { height: 1.875rem; font-size: 0.75rem; padding: 0 var(--space-3); }
 
+  /* ============ iconography recipe ============ */
+  /* One weight, currentColor so a glyph inherits text color, sized by a role.
+     These are placeholder shapes drawn to teach the mechanic, not a shipped set. */
+  .icon { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-row { display: flex; align-items: center; gap: var(--space-4); color: var(--gray-900); }
+  .icon-row .brand-mark { color: var(--brand); }
+
+  /* ============ layout panel demo (pinned head/foot, one scroll body) ============ */
+  .panel { width: 18rem; border: 1px solid var(--gray-300); border-radius: var(--radius-m); background: var(--background-2); box-shadow: var(--shadow-raised); display: flex; flex-direction: column; max-height: 12rem; overflow: hidden; }
+  .panel-head, .panel-foot { padding: var(--space-3) var(--space-4); flex: none; }
+  .panel-head { border-bottom: 1px solid var(--gray-300); font: var(--type-label); }
+  .panel-foot { border-top: 1px solid var(--gray-300); display: flex; justify-content: flex-end; gap: var(--space-2); }
+  .panel-body { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-2) var(--space-4); }
+  .panel-body p { margin: 0 0 var(--space-3); color: var(--gray-900); font: var(--type-body); }
+
+  /* ============ popover mock (static; teaches placement + capped body) ============ */
+  .pop-scene { position: relative; padding-bottom: 8rem; }
+  .pop { position: absolute; top: 2.75rem; left: 0; width: 14rem; background: var(--background-2); border: 1px solid var(--gray-300); border-radius: var(--radius-m); box-shadow: var(--shadow-float); max-height: 7rem; overflow-y: auto; padding: var(--space-1); }
+  .pop-item { padding: var(--space-2) var(--space-3); border-radius: var(--radius-s); font: var(--type-label); color: var(--gray-1000); }
+  .pop-item:hover { background: var(--gray-100); }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
   }
@@ -160,13 +183,36 @@
   <h2 class="sec-title">How this sheet works</h2>
   <p class="annotation">
     One section per foundation or component, each a boxed demo with a one-paragraph annotation
-    stating the law it carries. Foundations first (Color, Type, Spacing, Shape and elevation,
-    Motion, Voice), then the state grammar, then components. One home per component: extend a
+    stating the law it carries. Foundations first (Color, Type, Iconography, Spacing, Shape and
+    elevation, Motion, Layout and scroll, Voice), then shared grammars (state, overlays), then
+    components. One home per component: extend a
     section in place rather than adding a duplicate. Every demo must render correctly in both
     themes (the toggle above), and conformance against this sheet means computed styles and
     interaction, not vibes. Components reference tokens only; if a value is not a token, it
     does not ship.
   </p>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Components: reference the library</h2>
+  <p class="annotation">
+    Foundations above are always owned law; they theme the component library. Components come from the
+    project's component library by default, the way a working designer defaults to the company's system:
+    a component section names the library component, states which tokens theme it, and records only the
+    deltas (the variants and states this product uses, and what the component means here). It never
+    re-draws a primitive the library ships; that copy is the drift this sheet exists to prevent, and the
+    real themed component in the app is the conformance target. Hand-drawing is the exception, not a
+    mode, and both cases are escalations: a product-specific component the library does not ship is
+    composed from library primitives first and drawn fresh only when composition cannot express it; a
+    stack with no vetted library is a gap flagged for source intake, not a quiet fallback. When a library
+    component cannot do what a design needs, the constraint goes to the maintainer with options; nobody
+    silently builds around the library.
+  </p>
+  <ul class="spec">
+    <li>Default: a component section is a reference plus deltas; conform against the themed library component in the app, not a copy in this sheet.</li>
+    <li>Exception, escalated: product-specific components compose from library primitives first; fully hand-drawn sections exist only where composition cannot express the design (the Controls section below shows the drawn-section pattern for that case, and for pre-establishment starters).</li>
+    <li>Foundations (color, type, icons, spacing, shape, motion, layout, overlays, voice, status) stay owned law in every case and drive the library's theme.</li>
+  </ul>
 </section>
 
 <section class="box">
@@ -207,7 +253,11 @@
     Two families: the sans for everything, the mono for code, data, and token names. Each role
     sets size, weight, line-height, and tracking together as one token; components apply a role,
     never hand-set properties. Large sizes tighten tracking; body never does. At most two weights
-    per view.
+    per view. Families come from an open-source catalog (Google Fonts is the default pool),
+    license-clean, and are self-hosted (vendored or via a package like fontsource), never linked
+    from a runtime CDN. A brand face is chosen at establishment by rendering two or three real
+    candidates as specimens and ruling on sight, not picked from a name; the starter tokens below
+    fall back to system fonts until that ruling lands.
   </p>
   <div class="type-row"><span style="font:var(--type-title); letter-spacing:-0.02em;">Page title</span><small>--type-title · 22px 600 · -0.02em</small></div>
   <div class="type-row"><span style="font:var(--type-section); letter-spacing:-0.01em;">Section title</span><small>--type-section · 16px 600 · -0.01em</small></div>
@@ -215,6 +265,44 @@
   <div class="type-row"><span style="font:var(--type-label)">Label, for controls and single lines</span><small>--type-label · 13px 500</small></div>
   <div class="type-row"><span style="font:var(--type-caption); color:var(--gray-900);">Caption, secondary and quiet</span><small>--type-caption · 12px 400</small></div>
   <div class="type-row"><span style="font:var(--type-data)">data-and-code · 1,024 · v1.2.0</span><small>--type-data · mono</small></div>
+  <ul class="spec">
+    <li>Families are open-source (OFL or Apache), self-hosted, no runtime CDN link; the choice is a maintainer ruling.</li>
+    <li>Where a surface cannot load the webfont (a browser-tab icon, an OG image, some email clients), never hand the brand face to a bare <code>serif</code>/<code>sans-serif</code> fallback: bake the shape or accept the system fallback on purpose.</li>
+    <li>Roles are tokens: apply <code>--type-*</code>, never set size, weight, or tracking on a component by hand.</li>
+  </ul>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Iconography</h2>
+  <p class="annotation">
+    One icon set for the whole product, from an open-source library (Material Symbols is the
+    default recommendation); the set is chosen at establishment and swapped there, never mixed two
+    at a time. Glyphs ship as inlined path data in a <code>&lt;use&gt;</code> symbol library, at one
+    ruled weight matched to the type, drawing color from <code>currentColor</code>; never a webfont,
+    and never a hand-drawn glyph when the library already carries it. Third-party marks (a vendor's
+    logo) are the one exception: use that vendor's official asset, note its license, and keep its own
+    color. The shapes below are placeholders that teach the mechanic, not a shipped set.
+  </p>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ph-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></symbol>
+    <symbol id="ph-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></symbol>
+    <symbol id="ph-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/></symbol>
+  </svg>
+  <div class="demo">
+    <span class="icon-row">
+      <svg class="icon"><use href="#ph-check"/></svg>
+      <svg class="icon"><use href="#ph-search"/></svg>
+      <svg class="icon"><use href="#ph-dot"/></svg>
+      <svg class="icon brand-mark"><use href="#ph-dot"/></svg>
+      <small style="font:var(--type-data); color:var(--gray-700);">one weight · currentColor · last inherits brand</small>
+    </span>
+  </div>
+  <ul class="spec">
+    <li>One library, one weight, inlined as <code>&lt;symbol&gt;</code> + <code>&lt;use&gt;</code>; <code>currentColor</code> so a glyph inherits its context. No icon font.</li>
+    <li>Never hand-draw a glyph the chosen library carries; a custom path is a maintainer question.</li>
+    <li>An icon-only control carries an accessible label, and a glyph is never the sole carrier of meaning (pair it with a word, per the state rule).</li>
+    <li>Third-party marks: official asset only, license recorded, own color kept; they do not follow the single-set recipe.</li>
+  </ul>
 </section>
 
 <section class="box">
@@ -264,6 +352,38 @@
 </section>
 
 <section class="box">
+  <h2 class="sec-title">Layout and scroll</h2>
+  <p class="annotation">
+    One scroll region per surface. The page column owns vertical scroll; a view never nests a second
+    scrollbar inside the first, and a horizontal scrollbar never ships (content wraps or truncates
+    instead). When a panel must scroll its own body (a modal, a side rail, a long list), it owns
+    exactly one internal scroll region with the header and footer pinned outside it, and the
+    container never clips a child that overflows on purpose (a popover, a tooltip). The reading
+    column is capped at <code>--content-max</code> and centered with symmetric gutters, so
+    proportions hold from a laptop to an ultrawide.
+  </p>
+  <div class="demo">
+    <div class="panel">
+      <div class="panel-head">Pinned header</div>
+      <div class="panel-body">
+        <p>The body is the one scroll region.</p>
+        <p>Head and foot stay put while this scrolls.</p>
+        <p>A flex column with min-height: 0 on this child.</p>
+        <p>Never a second scrollbar beside this one.</p>
+        <p>Content wraps; it never scrolls sideways.</p>
+      </div>
+      <div class="panel-foot"><button class="btn btn-quiet btn-small" type="button">Close</button><button class="btn btn-primary btn-small" type="button">Save</button></div>
+    </div>
+  </div>
+  <ul class="spec">
+    <li>One vertical scrollbar per surface; zero horizontal scrollbars.</li>
+    <li>A scrolling panel pins head and foot; the body is the sole scroll region (flex column, <code>min-height: 0</code> on the scroll child).</li>
+    <li>A container that hosts an overlay sets no clipping <code>overflow</code> on the axis the overlay escapes.</li>
+    <li>Reading column: <code>max-width: var(--content-max)</code> with <code>margin-inline: auto</code>; gutters scale, the column does not sprawl.</li>
+  </ul>
+</section>
+
+<section class="box">
   <h2 class="sec-title">Voice &amp; microcopy</h2>
   <p class="annotation">
     This section is law for every string the product ships. Sheet prose and internal docs stay
@@ -275,7 +395,11 @@
     <li><strong>Say less.</strong> Helper text only when the affordance cannot speak for itself; default none.</li>
     <li><strong>Calm register.</strong> Sentence case everywhere; no all-caps labels; no urgency theatrics; state the thing, do not perform it.</li>
     <li><strong>Controls say what they do.</strong> Verb plus object ("Save changes"), the same name through the whole flow; never "OK" or "Submit".</li>
-    <li><strong>Errors direct, never apologize.</strong> What happened plus the next step; an empty state points to the first action.</li>
+    <li><strong>Errors direct, never apologize.</strong> What happened plus the next step.</li>
+    <li><strong>Empty states match the scenario.</strong> An accomplishment can read calm and positive, a blank slate points to the first action, a filtered-empty says what hid the rows; never force cheer where the moment does not carry it.</li>
+    <li><strong>Punctuation is calm too.</strong> No em dashes and no semicolons in shipped copy; periods, colons, commas, and parentheses carry the load (the dash and semicolon stay marks for docs, not product).</li>
+    <li><strong>Confirmations speak in the future.</strong> A confirm names what will happen on confirm ("17 tasks will move"), never the present tense that reads as already done.</li>
+    <li><strong>One fact per surface.</strong> Adjacent copy (a banner and the dialog it opens, a title and its body) never restate each other; each carries a distinct fact.</li>
     <li><em>(Add the project's ruled voice rules here, one line each.)</em></li>
   </ul>
 </section>
@@ -288,6 +412,35 @@
     instead of re-specifying a state. Labels come from one source module in code; no view invents
     status strings. State is never color alone: pair every state hue with a glyph or word.
   </p>
+</section>
+
+<section class="box">
+  <h2 class="sec-title">Overlays</h2>
+  <p class="annotation">
+    The one home for overlay behavior; every menu, popover, and tooltip follows it and no component
+    re-specifies it. An overlay renders in the top layer (a portal), positioned fixed off its
+    trigger's rect, not inside the scrolling content that spawned it. It flips across the trigger
+    when it would cross a viewport edge and clamps sideways to stay on screen; its own body is capped
+    and scrolls internally past that cap. It dismisses on outside pointer-down and on Escape (the
+    topmost overlay only), and returns focus to the trigger. Modals sit on this grammar too, with the
+    pinned head and foot from Layout and scroll.
+  </p>
+  <div class="demo pop-scene">
+    <button class="btn btn-secondary btn-small" type="button">Trigger</button>
+    <div class="pop">
+      <div class="pop-item">Menu item one</div>
+      <div class="pop-item">Menu item two</div>
+      <div class="pop-item">Menu item three</div>
+      <div class="pop-item">Menu item four</div>
+      <div class="pop-item">Menu item five</div>
+    </div>
+  </div>
+  <ul class="spec">
+    <li>Portal to the top layer; position fixed off the trigger rect; never clipped by an ancestor's <code>overflow</code>.</li>
+    <li>Flip on the cross axis at a viewport edge; clamp on the main axis; cap the body height and scroll it internally.</li>
+    <li>Dismiss on outside pointer-down and Escape (topmost only); focus returns to the trigger.</li>
+    <li>A re-measure never resets the body's scroll position: internal scroll and outside scroll are handled apart (the bug that makes a long menu un-scrollable).</li>
+  </ul>
 </section>
 
 <section class="box">

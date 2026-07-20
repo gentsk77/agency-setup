@@ -57,6 +57,20 @@ def extract_block(text: str, selector: str) -> str:
     return match.group(1) if match else ""
 
 
+def scan_undefined_vars(html: str, defined: set) -> list:
+    """Return sorted [(token, count)] for every var(--x) whose token is not
+    defined in the sheet's own token blocks. A single undefined var silently
+    voids its whole CSS declaration, so this is a hard gate, not a warning.
+    Browser-native custom idents that are not sheet tokens are exempt."""
+    exempt = {"--tw"}  # extend if the sheet ever hosts a third-party token namespace
+    counts = {}
+    for name in re.findall(r"var\(\s*(--[\w-]+)", html):
+        if name in defined or name in exempt or any(name.startswith(p) for p in exempt):
+            continue
+        counts[name] = counts.get(name, 0) + 1
+    return sorted(counts.items())
+
+
 def parse_sections(html: str) -> list:
     """Return [(title, annotation, [spec items])] per sheet section."""
     sections = []
@@ -111,6 +125,16 @@ def generate() -> str:
 def main() -> int:
     if not SHEET.is_file():
         print(f"sheet not found: {SHEET}")
+        return 1
+    html = SHEET.read_text(encoding="utf-8")
+    defined = set(parse_token_block(extract_block(html, ":root")))
+    defined |= set(parse_token_block(extract_block(html, '[data-theme="dark"]')))
+    undefined = scan_undefined_vars(html, defined)
+    if undefined:
+        print("UNDEFINED TOKENS: the sheet references var() tokens it never defines.")
+        print("Each silently voids its whole declaration. Define them or fix the typo:")
+        for name, count in undefined:
+            print(f"  {name}  ({count}x)")
         return 1
     content = generate()
     if "--check" in sys.argv:
