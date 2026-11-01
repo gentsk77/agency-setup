@@ -23,8 +23,8 @@ A person-agnostic process library: doctrine (why), components (installables), SE
 
 - **Person-agnostic:** roles only; no maintainer names, product names, or domain content from source repos. Mechanics cross in, domains stay out.
 - **Registry consistency:** `components/README.md` versions match every COMPONENT.md; profiles name only registered components.
-- **No em dashes** in any artifact (workspace rule).
-- **Git:** workspace house rules apply (`../AGENTS.md`): no commit or push without in-the-moment approval. Changes to `main` go through a reviewed PR, never a direct commit (a client-side hook enforces this: `git config core.hooksPath scripts/hooks`; D7). Private GitHub remote.
+- **No em dashes** in any artifact.
+- **Git:** no commit or push without in-the-moment maintainer approval. Changes to `main` go through a reviewed PR, never a direct commit (a client-side hook enforces this: `git config core.hooksPath scripts/hooks`; D7).
 - **Maintainer gates:** doctrine amendments and component version bumps need explicit maintainer sign-off; harvest proposes, never applies unratified.
 
 ## Session end
