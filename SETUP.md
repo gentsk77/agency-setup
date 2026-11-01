@@ -25,7 +25,7 @@ The maintainer can override or mix ("docs-research plus steward"). Profiles are 
 
 **Q4. Git posture.** GitHub remote with CI, or local-only? Picks the ci-gates flavor (workflow vs pre-commit hook) and how dev-lanes degrades (see its COMPONENT.md).
 
-**Q5. Multi-agent now or later?** Gateway installs either way (the intake discipline is the durable part). If "later", note in the manifest that dev-lanes/design-lane charters are dormant until first dispatch.
+**Q5. Multi-agent now or later?** Skip this question for the `minimal` profile: it installs no gateway (see `profiles/minimal.md`), and the gateway is the first component to add if the repo outgrows it. For every other profile the gateway installs either way (the intake discipline is the durable part). If "later", note in the manifest that dev-lanes/design-lane charters are dormant until first dispatch.
 
 **Carry the source defaults.** If design-lane installs, always record the vetted sources matching the target's stack (from `setup/sources.md`: the component library base, motion layer, font catalog, icon set) in the setup manifest as the project's **default component stack**. This is a reference, not an install, and not a question: components-by-default is the standing posture (a designer does not ask whether to use the company's system). The establishment interview in the `design-proposals` skill is where the maintainer confirms **which** library (default = the recorded one) and where anything actually gets adopted; the design system's own law governs how it all looks and when it animates.
 
@@ -76,7 +76,7 @@ Then:
 
 ## Step 4: hand off
 
-Tell the maintainer: setup is complete, and the first real braindump should go through the freshly installed gateway (`.claude/agents/product-lead.md`), which will grill it into the memory core. If a component was installed dormant, say which and what wakes it.
+Tell the maintainer: setup is complete. If the gateway was installed, the first real braindump should go through it (`.claude/agents/product-lead.md`), which will grill it into the memory core. For the `minimal` profile there is no gateway: tell the maintainer to just work, and that re-running this file to add the gateway is the upgrade path once requirements start arriving as braindumps. If a component was installed dormant, say which and what wakes it.
 
 ## Upgrade mode
 
